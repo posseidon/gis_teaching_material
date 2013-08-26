@@ -1,0 +1,89 @@
+CHAPTERS
+  Introduction
+  Maps and spatial functions
+  Basis for datamodelling on vector based dataset.
+  Spagetti model.
+  Network model.
+  Definition of topology with relational datamodel.
+  Spatial indexing.
+  
+  Basis for datamodelling on raster based dataset.
+  Datastructure for raster dataset.
+  Intensity transformation.
+  Mathematical background on digital filters.
+  Digital filters.
+  Edge-detection.
+  Non-linear filters.
+  Kuszoboles.
+  LOD algorithms.
+
+
+Introduction
+  An introduction on geoinformatics, a new branch of information technology, using both graphical and database knowledges. In the 1600's mathematics have become the basis for almost every natural sciences, as information technology in our days. Based on high standards, professional softwares, database technologies, graphical representations are used and applied widely among almost every science areas. By keeping the primary goals of geoinformatics,  information technologies have been applying their newest achievements in geoinformation sytstems. New methodologies have been introduced for representing and analyzing spatial based data.
+  In the following chapters, concepts, theoratical ideas used by geoinformatics will be introduced. Mathematical methods, principles and algorithms behind softwares are being dicussed in detail. We think it's crucial for students, attending practive oriented classes,that they should get familiar with methods and principles behind geoinformation sysytems, along with their routinish user level and practical problem solvers. 
+  Further goals of this material is to introduce a rapidly expanding world of open source technologies. Although only theoratical concepts will be discussed, further materials will rely on these knowledge to introduce problems solved by opensource tools and programming libraries. The world of opensource are relying on modern theoratical, computer science background what we will discuss in the following chapters. Interestingly, the world of opensource are progressing in a much faster pace then commercial softwares, who are essentially aiming for higher profit, thus their software concept only changes when it is inevitable by loosing profit. That's not how opensource world operates, they would rather focusing on technical challenges.
+  While editing this material on opensource technologies, bearing in mind that beyond theoratical knowledge, fully functional GIS applications and programming libraries which do not require existing spatial softwares, rather funciontalities are coming from the users by experience.
+
+  What is spatial?
+  By first glance the earth is spherical, which leads to the use of polar-coordinate system, having lambda and theta angles with r radius giving any P point coordinate's. (Let's accept this abstract approach, although we know that, the earth is not spherical from projections and referenced surface is not spherical).
+  One of the most important task of a map is to express spatiality by representing the earth on a spherical surface. Wether you are using a spatially flat traditional paper map or a digital map on a monitor, both methods needed projection from spherical to planer resulting distortion of the original image. A spherical surface can not be projected to planer surface without undistorted. Projection theory are dealing with similar problems.
+  Let us assume that, projected planer maps are avaiable before building a spatial information system. The only exception is data measured by GPS, which are fundamentally geographical coordinates (although transformation is applicable into planer surface).
+  Vectorized digital maps have been projected into planer surface by analog source map. Plane to plane transformations are needed when changing projection systems, calibration, georeferencing operations are done. As an example for importing digitalized map, and reproject it into a new projection system, plane to plane transformation is needed.
+  In case of remote sensed images, ground control coordinates defines the reference points between relative coordinates of source images and real coordinates of transformed images. In the following sections, we will discuss some of the mostly used planer transformations in geoinformation systems.
+  
+  Planer transformations
+  Put the case that we have a paper map in a given projection systems. Our task is to vectorize it. During vectorization we may keep the source projections system, although we could transform it into new projection system if required.
+  Generally raster based digitalized maps are scanned in relative coordinate system (upper-left coordinate is the origin, size are measured in pixels), transformation (georefrencing) is needed into real coorindate system.
+  Let's take a look at figure 2., which describes the possible plane transformations like, congruent, isomorph, affine, projective and topologic. For every single transformations invariants are related, which remain constant during transformation.
+    Figure 2. Possible planer transformations> 1. Congruent, 2: Isomorph, 3: Affine, 4: Projective, 5: Topological
+
+  > Congurent transformation
+  During transformation neither it's size or shape changes.
+
+  > Isomorph transformation
+  During isomorph transformation feature's size do change, however it's shape does not. Usually named Conform transformation, due to the angles are not modified during transformation (figure 3.).
+    Figure 3. Example for conform transformation: 1: Orientation preserved conform transformation, 2: Inverted orientation conform transformation a) source feature b) transformed feature.
+
+  > Affine transformation
+  During affine transformation both it's size and shape are changed, but parallelity is preserved. Note that included angles are not invariants.
+    Figure 4. Affine transformation: 1: Original shape, 2: Transformed shape.
+  As shown in figure 4. A'B' <> AB and A' angle <> A angle, although A'D' || B'C', additionally every each point on AD lies on A'D'. 
+  Equation for affine transformation:
+    x' = ax + by
+    y' = cx + dy
+  The following table summarizes affine transformation's properties: image
+  Affine transformation is one of the mostly used transformation method in Geoinformatics. Georeferencing action is applied, when the source map is a scanned raster image, relative coordinates are correlated to referenced coordinates, which is an affine transformation. Most of the coordinate system transformations are based on affine transformation method. 
+
+  > Projective transformation
+  During projective transformation none of the following properties are changed: size, shape and parallelity, but straight lines remain straight. This type of transformation is scarcely used on vector based data types. Although projective transformation may come handy for solving representation of 3 dimensional data, where perspective representation is needed.
+
+  > Topological transformation
+  During topological transformation angles, distances and parallelity are changed, however, continuity, ordinality and vicinity properties are intact.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
