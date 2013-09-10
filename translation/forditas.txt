@@ -81,10 +81,56 @@ Introduction
     Both traditional paper maps and modern digital maps fulfill the above listed functionalities. In case of paper based maps, 
 
 
+  Chapter 3.
+  Vector data model
+
+  Vector data model represents geometrical objects with characteristical information like points position, which are (x,y) coordinates for two-dimensional data, (x,y,z) coordinates for three-dimensional data. We should also know and store the projection system definition of coordinates. Supposedly softwares responsible for storing geometrical data can process coordinate systems. 
+  Every feature contains a set of points coordinates connected by rules (the simplest case is by incoming order). In accordance with the mathematical summary of chapter graph theory, objects are defined with graphs. Lines and polygons are build-up by characteristical points like vertexes or nodes.
+  How to decide which points are characteristical, in order to answer this question, let's take a closer look at an example of data input for vector based data. Data source can be remote sensing imagery or aerial photography images, in order to vectorize input data, we must detect control objects like rivers, roads, buildings and their characteristical points( building's reference points, road's junction points, river's junction points, etc.) can be detected relatively easily. However the substantial part is object dectection, which can be done with human interaction's knowledge, experience and expertise. Without him/her vectorization process can not be delivered.
+  Another consideration aspect is based on the purporse of usage for vectorized map.  According to predefined purpose of usage, the list of important, less important and neglectable objects are known, before vectorization process. For example, in case of vectorizing administration maps based on scanned paper based maps. In this case, every administrative boundary are important data, on the contrary rivers are less important, although not neglectable. Streams can be neglected, therefore are not present on digitalized map (even if it was present on the paper based map).
+  Figure 20: On the right handside, the reality, which will be stored and represented in vector data modell.
+  Vector based representation as described in figure 20, objects are projected perpendicularly to the surface in a coordinate system which is scaled in North-South orientation. During the process of vectorization based on paper maps, human interaction is required, with expertise in order to detect and select measure and characteristic points. At the end, our conclusion is that, human interaction with vast background-knowledge is required in the process of vectorization.
+  Figure 21: (left-hand-side) Examples for one-dimensional objects: a) line segment (section); b) linestring (polyline) with extreme points (end points) and vertices; c) non-intersected linestring; d) closed polyline; e) monoton polyline; f) non-monoton polyline; 
+  Figure 21: (right-hand-side) Examples for two-dimensional objects: aa) simple polygon; bb) complex-polygon (only exists as invalid object in geoinformatics); cc) convex-polygon; dd) monoton polygon; ee) polygon with inner structure (hollow polygon); ff) region with geometrically non-related objects [Rigaux et al]
+  
+  As represented in figure 20, where the real objects are vectorized. For modelling real world objects, geometry elements are used, like 0-dimension point and 1-dimension line. A specialized case for lines are polylines, which is a sequence of connected lines (by connecting lines, a constraint have been stated on vector data model, by introducing topological relation between lines). The other geometrical object is a two-dimensional polygon, build-up by a sequence of points (figure 21). A more accurate definition for a polygon is a sequence of connected segments, having identical start and end point, moreover it's topmost attribute is that, it's a closed area. Connectivity and closeness are topological constraints on connected segments. 
+  Figure 22: How Complex features are built-up from simple features (geometric primitives): 1 -- level of nodes; 2 -- level of lines and polygons; 3 -- level of features; 4 -- levle of complex features.
+
+  As represented on figure 22, only on base level, nodes contains coordinates data. Other features higher than node level, like linestring, and polygons contains only structural information, describing information with related features on lower abstraction level, which means that storing geometrical data is not sufficient, therefore creation and relation data between hierarchy levels are also required, for example features on lines and polygons level, should contain corresponding data on sequence of related points creating lines or polygons. Vector data model has various advantages, like:
+  - nodes are stored when there is break point on a segment.
+  - hard disk space efficient graphical representation.
+  - an option for set up feature hierarchy levels.
+  - unlimited number of connections to databases.
+Figure 23 describes data stored in database. Additional information, attributes can be added in form of database tables, if business logic requires so. 
+  Figure 23. Schematic diagram on relation between graphical and descriptive data. Relation between graphical objects and descriptive data is 1:1.
+  Figure 24. By creating feature groups yields adaptive data structures. Object-oriented system name it as "feature-class" (attribute classes), classical based on CAD terminologies software developers rather call it as "layer". As an example a feature class have been described: real estate values, containing parcels, buildings and public utility classes.
+  
+  For the ease of handling, vector data should be grouped logically depending on our purpose. Arbitary grouping based on declartion of system designer,developer could be a grouping method, where a designer's job to sort objects into groups (feature class or layer) eventually with greater resposibility over the system. Data can be groupped by feature attributes. Groupping can be fixed with non-variable data or flexible with dynamic grouping conditions.
 
 
+  Chapter 4
+  Spaghetti model
+  Vector data are stored by coordinates, as well as the relation between features, moreover connection relation should also be stored in vector model. Many everyday questions reveals the importance of topological data structure:
+  - "How do I get to the train-station", asked by a lost touriest.
+  - "Go straight ahead until the second turning, then turn right and follow until it crosses a level crossing, after that keep left to the tracks you will reach the station".
+  - "What's in between my and my neighbour's parcel?". The answer would be: "Nothing, only a fence, which is a 1-dimensional object", otherwise we could not be neighbours if there is another object between us.
+  Topology describes relations and connections (overlap, break points) between features.
 
+  Spaghetti model stores only connection rules between nodes and coordinates refering to nodes. It does not investigate topological relations between objects, for example neighbours of a polygon, is there a common node for overlapping polygons. It also does not store continuity and the order of features.
+  Figure 25. On of the typical mistake in spaghetti model. Dotted and continous lines should rely on each other, however it's not true, as shown by arrows, moreover the arrow with a question mark reveals a node which does not have a corresponding continous pair.
+  Most of the GIS softwares provides a general editing tool based on spaghetti model. It's advantage reside in simplicity, at the same time also a disadvantage. By letting a loosely coupled data structure in use, many mistakes are made, resulting bad quality spatial databases. GIS experts are capable of producing high-quality spatial data, although it's not advisable to apply spaghetti model in a widely used environment. General editing tools are using their own data format, which does not support relational data structure design elements like vicinity and relational considerations.
+  Despite of error proneness by using spaghetti model, some of the GIS software are still using them. For checking if a polygon a ring, by inspecting discontinuity of linestrings is done on software level, even though data structure does not support data consistency which may be checked by comparing coordinates by coordinates. As shown in figure 25 a concept for modelling spaghetti model with relation database. The "geometriai elemek" table store unique identifier on nodes (primary key) and their coorindates. The "objektumok" table contains the unique identifier of additional attribute data, like "Name", "Field1", etc. Note that, the order of nodes is crucial, since only incrementally drawing nodes yields correct polygon. Structure described in figure 25 gives the ability of storing polygons topologically, however with no guarantee that it's correct all the time. Manual or software based interaction is needed for correct topology.
+  Figure 26. Nodes and polygons composed of nodes defined by connection tables. However it does not contain any information on topology.
+ 
 
+  Chapter 5
+  Network model
+  It was intended to define objects by a network of segments with network topology like transportation orgranization, shipping, logictical challenges, public utility networks and relations. All of them  are modelled based on graphs where nodes are defined by business logics rules. Arcs and polylines are distinguished.
+  As you can see, it's recommended to handle polylines containing many nodes as arcs, especially in routing optimization questions, because these polylines does not have junction points. Many graph algorithms exists for routing questions, however due to the content-lenght limitations of this book, routing optimization will be left out of discussion.
+  Figure 27. Nodes, polylines and arcs composes networks [Rigaux et al]
+
+  Linear referencing
+  Localization can be determined in various ways. The most common way by giving x,y,z coordinates along with postal codes, which have been applied for quite a long time. (Let us asume that a friend of us, instead of  giving the address, coordinates are given, we would be surprised, as postal code based localization method is known and accepted.) Line based features, like public utility and transportation networks (roads, railways),for describing any points on it, let's use the following method, which is one of the most commonly used model based on network model. 
 
 
 
