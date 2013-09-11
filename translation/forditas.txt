@@ -130,7 +130,24 @@ Figure 23 describes data stored in database. Additional information, attributes 
   Figure 27. Nodes, polylines and arcs composes networks [Rigaux et al]
 
   Linear referencing
-  Localization can be determined in various ways. The most common way by giving x,y,z coordinates along with postal codes, which have been applied for quite a long time. (Let us asume that a friend of us, instead of  giving the address, coordinates are given, we would be surprised, as postal code based localization method is known and accepted.) Line based features, like public utility and transportation networks (roads, railways),for describing any points on it, let's use the following method, which is one of the most commonly used model based on network model. 
+  Localization can be determined in various ways. The most common way by giving x,y,z coordinates along with postal codes, which have been applied for quite a long time. (Let us asume that a friend of us, instead of  giving the address, coordinates are given, we would be surprised, as postal code based localization method is known and accepted.) Line based features, like public utility and transportation networks (roads, railways),for describing any points on it, let's use the following method, which is one of the most commonly used model based on network model. For example kilometer stones on roads and riverways, each stone includes it's exact coordinates, however in many cases localization depends on the location of these stones (eg.: 150 meter from the 123-rd kilometer stone along with the downstream. Usually relative localization are being used for road incidents, like "accident occured on route 4 between 52nd and 53rd kilometer stone. Kilometer stones on rivers and roads like break points on map segments, can be considered as points.
+  Line segments representing edges in a network model, are not always resides on break points (a 10km long straight railroad segment, which has only one start and end point, no mid points). It's unnecessary to store nodes on a straight line segment. By storing nodes on each break point in map segments a linestring can be genrated from it, however it's not correct because we would introduce many redundant points in the geometry (larger, multiple level junction points are stored on each path's crossing points, or a river have been redirected during a construction of a power plant or a dam). Significant length increase may occur, if we keep the segment based logic, resulting modifications on kilometer based segments, which is not possible to do so.
+  Eventually no matter what method are being used for localization, in case they are congruent and leading to the same result. Methods may vary depending on application areas. A few of these localization methods are: geographical coordinates; road segment number; relative distance to segment identifier; relative distance to town border; relative distance from kilometer stones; distance from junction points; distance from significant points. Each application area are building their information systems on different scale levels depending on business logic corresponding to their field of interest. By using different scales and satisfying business logic needs, segmentation is a crucial problem as shown in figure 28.
+  Figure 28. Schematic representation of linear referencing applied on different scales and business logic.
+  Figure 29. A linestring represented by nodes (n1,n2,n3 and n4) matched with segment break-points.
+  On Figure 29 a Linestring represented by n1,n2,n3 and n4 nodes coordinates and by linear referencing (segmentation) on the same nodes (e.g.: distance from a given segment number, as shown in the following table).
+  Table 2. Georeference table of nodes n1,n2,n3 and n4.
+  Table 3. Linear reference table of nodes n1,n2,n3 and n4.
+
+  Dynamic segmentation
+  Layer based approach are segmenting graphical data, and applies business logic on segments which are part of the graphical database. Due to the popularity of object oriented methodology, dynamic segmentation may be applied on any attribute of a graphical data, resulting a more flexible way of building and designing systems. Especially in linear referencing systems, where segments are implemeted by linear referencing as shown in Table 4 and Figure 30.
+  Table 4. Linear referencing have been applied resulted in symbol K.
+  Figure 30. A Linestring, with segment break points and K symbol linestring, defined by linear referencing as defined in Table 4.
+
+
+  Chapter 6.
+  Define topology using relational tables
+
 
 
 
