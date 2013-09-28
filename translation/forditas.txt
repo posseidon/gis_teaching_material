@@ -136,7 +136,7 @@ Figure 23 describes data stored in database. Additional information, attributes 
   Figure 28. Schematic representation of linear referencing applied on different scales and business logic.
   Figure 29. A linestring represented by nodes (n1,n2,n3 and n4) matched with segment break-points.
   On Figure 29 a Linestring represented by n1,n2,n3 and n4 nodes coordinates and by linear referencing (segmentation) on the same nodes (e.g.: distance from a given segment number, as shown in the following table).
-  Table 2. Georeference table of nodes n1,n2,n3 and n4.
+tetszeni  Table 2. Georeference table of nodes n1,n2,n3 and n4.
   Table 3. Linear reference table of nodes n1,n2,n3 and n4.
 
   Dynamic segmentation
@@ -147,6 +147,38 @@ Figure 23 describes data stored in database. Additional information, attributes 
 
   Chapter 6.
   Define topology using relational tables
+
+  Figure 31. Points, contours, polygons and countries named relational tables [Rigaux at al]
+
+  In order to implement a vector data model, it's natural to use relational data-structure. In case of spaghetti model, as we have experienced that polygon structures can be well defined by using relational data structure. Now, let's examine, how to refine relational structure to achieve topologically correct structure automatically. 
+  Let's specify the above mentioned example, by defining contries in Europe as additional data (attributes). As described in Figure 31. basic geometries are stored in "pontok" table, "konturok" table containing contours is referencing to "pontok" table, "poligonok" table containing polygons is referencing to "konturok" table. "Konturok" table contains as many linestrings as borderlines (each neighbour polygons) each polygon (surface) has, at last "Orszagok" table references to "poligonok" table geometrical data, other additional data like (name, capital, population) are stored inside table structure. Notice that in case of modifying a node (eg.shifting) does not ruin the topological structure at all. An efficient structure like this ensures the topological properties, despite of it's topological structure, we are still calling it a relational model.
+  For example let's take a look at an SQL command selecting contour lines of France:
+SELECT poligonok.id-contour 
+  FROM országok, poligonok, kontúrok, pontok WHERE name=`France`
+  AND országok.id-boundary=poligonok.id-boundary
+  AND poligonok.id-contour=kontúrok.id-contour
+  AND kontúrok.id-point=pontok.id-point
+  ORDER BY poligonok.id-contour, point-num
+
+  Chapter 7.
+  Polygon topology described by graphs.
+
+  As described topological storage consist of points, arcs and polygons. The major question is: how can we store objects with their relative relational information with each other like neighbourhood integrated into data-structure. By using relational model, the correctness of topological structure is not self-maintained (using softwares, which enforces the topological correctness from users, avoiding topological errors).
+  A topological data-structure must contain the following steps:
+    - storing the topological relationship of geometrical elements.
+    - enforcing correctness on data, like avoiding gaps between polygons (exception can be city borders), or intersection, etc.
+    - storing embeded polygon relations, may occur quite frequently on maps (eg.: an island in a lake).
+    - storing additional information on geometry data: colour of a polygon, linestring is represented as dashed lines, etc...
+    - able to answer topological queries like: location of a point, what objects does a polyline intersects, neighbours of a polygon, embeded polygons, etc.
+  Geometry types are point, linestring and polygon, therefore layers can be defined according to their type. As mentioned above, it's sufficient to store a unique identifier and coordinates of a point. A point may represent a standalone entity of an information system, not only representing an element of a compound geometrical object. 
+
+
+
+
+
+
+
+
 
 
 
