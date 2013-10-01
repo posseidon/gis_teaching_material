@@ -213,6 +213,12 @@ SELECT poligonok.id-contour
   - Support for multi-level embeded areas and the containing relation can be easily investigated by using inclusion graph.
 
   ALTERING SIMPLE GRAPH
+  Beside building datastructure, we should also examine in cases of modification is made on data. It's relatively easy to remove an edges, we must check which areas have been separated by the removal edge. In case of real areas, we must combine these areas into one new area. In case of real and inclusion area, real area will be attached to inclusion area, in a way that the neighbours of the real area from now on will be set to inclusion area via new edges of inclusion area. After this, we should also check if there is any node having only two edges connected to it. It there is, remove them and join the two edges in the neighbour's list.
+  Figure 36. An axample for altering a simple graph by inserting a new polygon (middle) into the graph with creating and deleting new nodes and edges. It's more convenient to build a new graph than altering the original.
+  A major disadvantages of simple graph occurs when we want to insert a new node. Multiple edge will be introduced into dual graph, therefore the insertation of a single node should be prohibited unless it comes with the insertation of edges, resulting new areas. Inser a polygon with caution, because rebuild of simple graph is required (figure 36).
+
+  SPATIAL INDEXING
+
     
 
 
