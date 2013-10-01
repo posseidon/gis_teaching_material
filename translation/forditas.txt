@@ -190,7 +190,30 @@ SELECT poligonok.id-contour
   The advantage of this data structure that it supports all the major functionalities and topologically correct. In the next section we will discuss the preparation of this data structure.
 
   SIMPLE GRAPH and it's Dual
-  A pre-condition for building a simple graph
+  A pre-condition for building a simple graph is a topologically correct set of polygons. End points of linestrings are collected in the first step, from end points simple graph's nodes are created and stored, identifying points on the surface. Linestrings are represented by edges. Edges are inserted in edges list preserving the correct order.
+  After simple graph have been created, we can create it's dual graph. First of all, areas are created by processing edges, which are processed in an ordered manner e1,e2,...,en. At step i the following task must be done as described in Figure 35:
+    - check the existance of areas on both sides of edge ei.
+    - if yes, then move on to the next edge.
+    - if not, then:
+      a. new T area is rendered on the right side of edge ei
+      b. travel around area T, that T is on the left-side of edge ei with respect to direction of traverse that ei is the first edge in the list.
+      c. traverse order on points should keep the order in edges list.
+      d. on travesed edges, let's set T area on the left handside of the current edge.
+      e. at the end of traverse, resulted contour polyline should be stored, actually this is the polygon called T.
+
+  Figure 35. Original set of polygons; direction of first step; steps in creation of simple graphs; final simple graph with dual graph areas; nodes and edges of dual graph (darkened areas represents real areas, where lightish areas are included areas).
+  
+  The algorithm of building areas defines areas and their relations, in addition polygons are determined, which encloses these areas. From the direction of traverse are determining wether an area is real or included. If nodes of a polygon is stored in the order of traverse in the contour polygon, then it's a real area, otherwise an included area. This polygon can be checked by signed area calculation. When all the inclusion area have been determined, there's not much to do, than the construction of the inclusion graph, which can be done the following way:
+  - let's order areas in descending order by their precise area.
+  - the first inclusion area which is the whole picture. Let's perform a search in the tree(melyik faban, simple vagy dualis?) that which inclusion area falls into a real area, as a result insert these areas into the dual graph's node representing this area.
+  - by performing a traverse on the dual graph from the actual inclusion area, reachable areas are inserted into dual graph's node representing the inclusion area.
+  Due to ordering, cross inclusion problem have been eliminated where an included area contains it's inclusion area as included area. The given datastructure has many advantages like:
+  - No duplication storage for edges, therefore topological correctness is true all the time. For example a linestring's position  have been moved into intersection with another linestring. When a linestring is altered, it will effect both polygons, which are separated by this linestring.
+  - It's easy to query a polygon's neighbours, since the dual graph will give the neighbours of current polygon.
+  - Support for multi-level embeded areas and the containing relation can be easily investigated by using inclusion graph.
+
+  ALTERING SIMPLE GRAPH
+    
 
 
 
