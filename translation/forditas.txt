@@ -218,7 +218,18 @@ SELECT poligonok.id-contour
   A major disadvantages of simple graph occurs when we want to insert a new node. Multiple edge will be introduced into dual graph, therefore the insertation of a single node should be prohibited unless it comes with the insertation of edges, resulting new areas. Inser a polygon with caution, because rebuild of simple graph is required (figure 36).
 
   SPATIAL INDEXING
+  Digital maps, vector or raster based usually requires large amount of processing and memory resources. During graphical representation of digital data, a bidirectional correspondence is made between database and display device.
+  Figure 37. Scale representation of the actual proportion between a viewport and database.
+  Grey area described on figure 37 represent the whole area stored in database, whitely coloured area represent the actual viewport displaying desired area. The most straightforward way is to read the whole database into memory, then initiate the graphical drawing of data, however this method is not convenient in many aspects. On the one hand, it's unnecessary to read data outside the viewport, on the other hand, memory usage is limited, therefore it's practical to load data inside the viewport. Moreover, by reading data from harddisk is much slower than from random access memory, therefore it's practical to split-up data into pages, and read them page-by-page. An I/O operation is equivalent with a read/write of a page. Then again, the number of reads must be synchronized with the size of a viewport. Both of the above described conditions represent opposite interests, which can only be resolved by indexing of data, reducing the query against database on different viewports.
+  For rapid querying on data inside a viewport, we must exclude the rest of data. Unfortunately the traditional indexing methods like B-tree on relational databases do not support this type of indexing requirements. A solution for it are spatial indexing algorithms. Before discussing the spatial indexing algorithms, let's get familiar with terms like centroid and bounding-box.
+  Figure 38. Centroid of a convex and concave polygons.
+  A centroid is a replacement object, a point, which is inside a polygon and capable of representing a polygon's spatial orientation. It's obvious that in case of convex polygons a centroid is it's center of gravity, as for concave it's a point on the centroid line (as represented on figure 38). A bounding box is the quad with smallest area containing the actual polygon (as represented on figure 39).
+  Figure 39. A bounding box.
+  Both terms are valid for polygons and polylines. During spatial indexing these terms are needed to represent remarkably complex objects (polygons and polylines).
+  For indexing spatial data, there are two methods for it, namely spatial objects partitioning or split-up the examined space by partitions. In the following we will discuss grid indexing and quad-tree indexing methods, which can be classified as space partition algorithms for accelerate the query. Lastly R-tree indexing algorithm will be discuess, which is a data driven indexing structure.
 
+  GRID INDEXING.
+  
     
 
 
