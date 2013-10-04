@@ -229,7 +229,15 @@ SELECT poligonok.id-contour
   For indexing spatial data, there are two methods for it, namely spatial objects partitioning or split-up the examined space by partitions. In the following we will discuss grid indexing and quad-tree indexing methods, which can be classified as space partition algorithms for accelerate the query. Lastly R-tree indexing algorithm will be discuess, which is a data driven indexing structure.
 
   GRID INDEXING.
-  
+  Let's split planer objects into regular grids as described on figure 40.
+  Figure 40. Objects with different areas displayed on regular grids.
+  In order to search objects rapidly, the first step is primary filtering by using coordinates of objects and sort them into grids, where grids have their own identifier index for faster querying. Objects falls into given grids are returned as query results. By index indentifiers we are requesting objects related to that index, which is more efficient than reading the whole database (Figure 41). Secondary filter does the processing of geometries on found objects (e.g.: in case of polygons reading of vertices and displaying them).
+  Figure 41. Index table and it's relation to the original table.
+  As described on figure 40, the size of grids are not always proportion with the size of objects. If the grid size is too large, then too many objects are related to it, which leads to inefficiency in case of extreme data. If grid size is too small, then large objects may relate to too many grids, which also not very efficient. The algorithm may improve if we use altering sized grid levels.
+  Grid indexing algorithm is a simple and efficient way of spatial indexing. Many commercial softwares are applying this type of indexing, despite of it's shortcomings, especially when the spatial distribution of objects are not equidistributed. The optimistic scenario would be that every grid should contain closely the same number of related objects, however due to the constant size of grids will not make it possible. In case of inhomogenous spatial distribution leads to the inefficient of secondary filtering, therefore we need new indexing algorithms with better conditions. For homogenous data distribution like raster based data structures, grid indexing can be applied. Although quadtrees indexing algorithm is much more efficient and widely used.
+
+  QUADTREE
+
     
 
 
