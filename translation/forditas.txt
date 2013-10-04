@@ -252,6 +252,17 @@ SELECT poligonok.id-contour
 
   Up to this point we have only discussed quadtree algorithm for vector data model, however it can also be applied to raster based data model, due to the fact that the distribution of raster data are equidistributed. As for raster based data model, partitioned quadtree shall be used. The structure of it is similar to point-based quadtree, the only difference is that leaves contains all the information on the range sub-partition. This quadtree can be used for compressing images as follows: execute partitioning until the sub-partition contains on homogenous data, then intensity values will be stored in leaves.
 
+  R-TREE
+  The above discussed algorithms apply partitioning on the plane, irrespectively of objects spatial distribution. Disadvantages of this type of algorithms revealed when distribution of spatial objects are uneven, for example in case of vector data models. R-tree is data-driven tree structure. Many versions of r-tree algorithms are present, however we will discuss with the basic version. R-tree is is a hierarchially embeded or overlapped system of bounding-boxes. Each node of the tree is equivalent to a page table on the disk (dataset read from disk with one cost). A node may contain leaves or further nodes. Nodes containing sub-nodes are called directory nodes (the name suggest that bounding-boxes may contain sub-nodes or leaves). A leave contains coordinates of the bounding-box (not only 2D bounding-boxes) and an indentifier. The root of the tree is R  containing at least two nodes.
+  Figure 45. An R-tree. Bounding-boxes a,b,c,d contain further sub-nodes, which can be nodes or leaves and so on.
+
+  Figure 45. demonstrates a simple case where bounding boxes signed with a,b,c,d letters contains further nodes.
+  Figure 46. Point search performed on R-tree. As you have noticed that point P is in the directory of c and d bounding boxes and not in a and b directories, therefore we only search in c and d directories recursively. At the end we get that P point is inside leaves with identifier of 8 and 12 bounding-boxes. The simples search method is point based which can be executed in two steps. First step is to look up all directories may contain the given point P under root node (don't forget that bounding-boxes may overlap). In the second step, let's examine directories found in first step that which of them contains leave with the given P point in it (this can be recursive). Based on point search, linestring and polygon search are executed in the same manner.
+
+  Chapter 9.
+
+  BASIC OF RASTER DATA MODEL.
+
 
 
 
