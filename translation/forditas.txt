@@ -237,10 +237,20 @@ SELECT poligonok.id-contour
   Grid indexing algorithm is a simple and efficient way of spatial indexing. Many commercial softwares are applying this type of indexing, despite of it's shortcomings, especially when the spatial distribution of objects are not equidistributed. The optimistic scenario would be that every grid should contain closely the same number of related objects, however due to the constant size of grids will not make it possible. In case of inhomogenous spatial distribution leads to the inefficient of secondary filtering, therefore we need new indexing algorithms with better conditions. For homogenous data distribution like raster based data structures, grid indexing can be applied. Although quadtrees indexing algorithm is much more efficient and widely used.
 
   QUADTREE
+  Quadtree is a hierarchial data structure, based on the principle of "devide and rule" using recursive decomposition. There are many variations of quadtree implementations, where point region or PR-quadtree will be discussed. The basic idea behind this is to devide the space into four/quad planes (figure 42) called space-driven structure.
+  Figure 42. A point and a quadtree plane division.
+  A tree-structure is used for indexing structure, where every inner-node represents a plane range, in it's leave objects are attached. Root of the tree is the starting range. Every inner-node contains it's own partition's centroid and four pointers on four orientation partitions with abbreviation according to quarters namely: NW (north-west), NE (north-east), SE (south-east), SW (south-west). If a node has no child than it's a leaf, the flag related to it will be set as true. A leaf can be empty or contains object with coordinates and additional attributes. Orientations of a leaf are undefined. Note that in case of inner-nodes it's not necessary to store orientation partitions because partitioning is always trivial. Due to the trivial partitioning, with a correct tree data-structure implementation, storage of partitions can be avoided.
 
-    
+  Figure 43. describes a quadtree containing seven objects with their coordinates.
+  Figure 43. Recursive plane partitioning and partitioned levels in quadtree structure.
+  
+  A quadtree is build from it's root towards the leaves. During traverse, the child of given inner-node will be selected by the inserted point's coordinates. If its a leaf and empty, the insert it. If the leaf has already contains an object, then the range should be re-partitioned until the old node and new node are not in the same range. This type of partitioning results in many new partitions in case of relatively nearby points. Partitions can be eliminated during point deletion. When a point is deleted, and the containing partition has only a point, the partitions can be merged together.
+  Indexing can be implemented using a quadtree structure where partitions are equivalent with page size, namely plane range should only partitioned when points stored in partition are overflowed in page size. With this modification leaves does not contain only one object, but a set of objects, which will be stored in the same page.
 
+  In case of polygons the algorithm is not that simple. A complex object like a polygon has many points, therefore as indexing method, we are using their centroid or bounding-box. Both terms centroid and bounding-box are suitable for determining the polygon's location on a quandrant. A centroid can only and only belongs to a single quadant, on the other hand a bounding-box may belongs to many quadrant, as described on figure 44.
+  Figure 44. Quadtree and polygons bounding-boxes.
 
+  Up to this point we have only discussed quadtree algorithm for vector data model, however it can also be applied to raster based data model, due to the fact that the distribution of raster data are equidistributed. As for raster based data model, partitioned quadtree shall be used. The structure of it is similar to point-based quadtree, the only difference is that leaves contains all the information on the range sub-partition. This quadtree can be used for compressing images as follows: execute partitioning until the sub-partition contains on homogenous data, then intensity values will be stored in leaves.
 
 
 
