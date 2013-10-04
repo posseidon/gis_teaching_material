@@ -275,7 +275,10 @@ SELECT poligonok.id-contour
   We must also know the spectral range where the image taken (with a digital camera). Simple digital cameras are working in the spectral range of visible lights, where other devices are working in the spectral range of infra-red. In the era of satellites for sensing different spectral ranges tool have been developed. Some of them are working in visible spectral ranges like SPOT and ICONOS, where others are operating in a wide spectral range like LANDSAT TM, which operates on RGB and four infra-red bands. A device spectral resolution number is proportion to the number of bands it can sense. The most advanced devices are hyperspectral cameras, which can process hundreds of electromagnetic spectrals into bands. There are also many devices operating in radio frequency ranges, based on radar concept for sensing surfaces. The major difference between radar and the above mentioned devices that, radar based devices emits waves to detect and sense data, where others are using emittions from the sun.
 
   COLOUR DEPTH AND TRANSPARENCY.
+  The representation of colours have evolved with the development of computers. In the beginning colours were represented on 4 later on 8 bits. Coloured images were poor in tones, it's rather suitable for presenting as graphic. Nowadays colours are represented in 24, moreover in 36 bits on computers, therefore digital images are capable of displaying millions of tones. Figure 48 describes the bits with representable colours.
+  Figure 48. Colours by pixel in numeric representation.
 
+  Spatial images are using the above mentioned colour representations, moreover during preprocessing states algorithms usually transforms images from one model to another (e.g.: thematic representation). It can't be overemphasized that, a black and white image represented in 1 bit is not equivalent with the black-and-white image we know of, namely 256 (8bits) greyscale represents objects projected tonal conditions, while on 1 bit representation model only 
 
 
 
