@@ -261,8 +261,20 @@ SELECT poligonok.id-contour
 
   Chapter 9.
 
-  BASIC OF RASTER DATA MODEL.
+  BASICS OF RASTER DATA MODEL.
+  Raster based data model is the other major data model of geoinformation technologies. The major difference between vector and raster based data models are in the data structure and the projection of surface objects. The level of details of surface data are significantly different along with data processing methodologies. For instance vector data model are based on relation databases, where raster data models heavily rely on different image processing algorithms. These algorithms rely on mathematical methods like Fourier transformation or multivariable statistical knowledge like cluster analysis or main-component-analysis.
 
+  ELECTROMAGNETIC SPECTRUM
+  Figure 47. Valuable range of electromagnetic spectrum. RGB define the visible range, where near IR and middle IR and far IR are infra-red ranges.
+
+  As described on figure 47 electromagnetic ranges are used in remote sensing. Raster based GIS (geoinformation systems) used these ranges. Light emitted from the sun and reflected from the surface of the earth are sensed and stored in image format which are stored on harddisks. Let's examine the method of specifying a digital image.
+
+  PIXEL, SPECTRAL RESOLUTION, WAVELENGTH
+  A digital image's most basic building blocks are pixels, the smallest imagepoint, which can be created by image creation tools. An image creation tool can be satelites, scanners or a digital camera. A pixel optically is homogenous, namely it's colour and photometrically are the similar. The captured area in pixels have real measurements, namely scale.
+  The term spatial resolution is closely related to the size of pixels and the size of the capture image. The resolution is proportionally equivalent with the number of pixels it contains on a captured area. For example an image with the resolution of n*m pixels (n rows and m columns) on a smaller area is considered as a high resolution image, however if the captured area is vast then the resolution is quite small, although in physical size it does not change at all.
+  We must also know the spectral range where the image taken (with a digital camera). Simple digital cameras are working in the spectral range of visible lights, where other devices are working in the spectral range of infra-red. In the era of satellites for sensing different spectral ranges tool have been developed. Some of them are working in visible spectral ranges like SPOT and ICONOS, where others are operating in a wide spectral range like LANDSAT TM, which operates on RGB and four infra-red bands. A device spectral resolution number is proportion to the number of bands it can sense. The most advanced devices are hyperspectral cameras, which can process hundreds of electromagnetic spectrals into bands. There are also many devices operating in radio frequency ranges, based on radar concept for sensing surfaces. The major difference between radar and the above mentioned devices that, radar based devices emits waves to detect and sense data, where others are using emittions from the sun.
+
+  COLOUR DEPTH AND TRANSPARENCY.
 
 
 
