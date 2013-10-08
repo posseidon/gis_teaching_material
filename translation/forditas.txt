@@ -283,8 +283,34 @@ SELECT poligonok.id-contour
 
 
 
-
-
+  COLOUR MODELS
+  Let's take a three dimensional coordinate system where the axis represents the colours. 
+  Figure 49. RGB colour cube.
+  The RGB colour model is a composite of Red, Green and Blue colours, which have been created by:
+    Colour = a*Red + b*Green + c*Blue
+  where a,b and c coefficients stands for the ratio of RGB components in the resulted colour. By applying the 24 bit based colour representation mode, we will get 2 on the power 24 shades of colours, which is 2^8 of Red, Green and Blue shades can be represented, namely 256 intesity value can be set for each base colours.
+  
+  HSI COLOUR MODEL
+  HSI colour model fundamentally different from RGB model. Whereas RGB usses Decarte's coordinate system, HSI uses polar-coordinate system for representing colours as described on figure 50.
+  Figure 50. HSI colour cone.
+  HSI is the abbriviation of Hue, Saturation and Intesity words. Remote sensing softwares support both colour models. There are many more colour models like CMYK (mostly used for publishing areas, printing industry although these kind of models are not used in remote sensing.
+  
+  RASTER DATA-STRCUTURES
+  Raster data-structures are simpler than vector based, since their common property is a table, each row and column contains information on a pixel which can be intesity, height values, etc... Let's take a look at figure 51, where a pancromatic (grayscaled) image have been described in the above mentioned table structure.
+  Figure 51. Pancromatic (grayscaled) Image table representation.
+  There are many raster file formats present, but most of them are based on table structure, therefore we will not discuss in detail these file formats. Figure 51 descibes a schematic representation of a raster image, because most of the software companies dealing with remote sensing are working on the same basis with their own modifications on the method of transforming into their own data format. This knowledge will be gained when conrete usage of these  softwares are required. Data table on figure 51 contains only one intensity band, however in case of RGB based image, there will be three data tables (intensity matrix) representing the image. In case of 32bits images, a fourth intensity matrix is also required to described the transparency data.
+  
+  In case of multi-spectral remote sensed images along with RGB bands, each infrared bands are having their own intensity matrix. By taking into consideration the speed of development around hyperspectral remote sensing, an image may contain hundreds of intensity matrixes. It's quite a challenge to handle the large amount of data, not to mention the interpretation of each band's data, therefore we may state that, remote sensing is an enormous research area waiting to be exploited.
+  
+  WELL-KNOWN RASTER DATA FORMATS
+  Many raster based data formats are used in every day applications, as well as in remote sensing. Some of  the formats are closely related to operating systems (eg. bmp) or compressed images created by lossfull (jpg and some of tiff formats) and lossless (tif, gif, png or jpg2000)  algorithms ,while others are not compressed. A few data formats will be described, since many books are discussing them thoroughly.
+  TIFF. Used for general purposes, especially applied in progressional image processing areas. Platform indenpendent. Widely spread and used among remote sensing, pixel based data representation are capable of storing image parameters, text and numeric based data along with pixel data. It supports both shallow and professional 24 or 32 bit colour models, until CMYK colour models used in printing industry. Compressed (lossly and lossless) and uncompressed formats are available. A variation of it namely GeoTiff contains georeferencing control points, therefore by reading it into a remote sensing system a georeferenced data will be available immediately.
+  
+  Jpg: An outstandingly efficient compressing algorithm have been used, by keeping rich details of images. It's widely used by digital photography. The amount of quality loss can be calibrated by the end-user. Of course, for larger compression, the more image quality loss is produced. It's only used for storing rich detailed data, like photos. It's not suitable for compressing line-based raster formats, because the quality loss is significant. A georeferenced variation of it is Jpg2000 which is a lossless format, although haven't been used widely.
+  
+  Bil: Specifically created for storing remote sensing images in binary format, capable of storing frequenc data bands, calibration points, corner coordinates and projection system parameters. The *.bil file contains intensity value for each pixel by band, *.hdr header file contains attributes data, like georeferenced points, corner and column data. Widely spread and used by many remote sensing softwares, systems, moreover, vector based systems capable of processing raster data are also supporting this type of raster format.
+  
+  INTENSITY TRANSFORMATION
 
 
 
