@@ -310,7 +310,7 @@ SELECT poligonok.id-contour
   
   Bil: Specifically created for storing remote sensing images in binary format, capable of storing frequenc data bands, calibration points, corner coordinates and projection system parameters. The *.bil file contains intensity value for each pixel by band, *.hdr header file contains attributes data, like georeferenced points, corner and column data. Widely spread and used by many remote sensing softwares, systems, moreover, vector based systems capable of processing raster data are also supporting this type of raster format.
   
-  INTENSITY TRANSFORMATION
+  Chapter 10. INTENSITY TRANSFORMATION
   Histogram equalization
 
   All images contains different photometric values on each pixel. These pixel photometric values are varying from black to white. Although, this never occurs in real life. Due to the environmental and digital projection methods, the dynamic range of intensity values are much narrower than expected.
@@ -347,8 +347,41 @@ SELECT poligonok.id-contour
   Figure 60. Binarization reset the intensity value under k threshold, and set the value to 1 for those having intensity value over k threshold. T describes the intensity transformation function, in our case its a step-function.
   Figure 61. Slicing filters are working inside a band by reset it's value (in other words, they subtract the intensity band from the image), or keep it.
 
-  ABSTRACT KNOWLEDGE ON DIGITAL FILTERS.
- 
+  Chapter 11. ABSTRACT KNOWLEDGE ON DIGITAL FILTERS.
+  Digital filters are usually image processing methods manipulating on frequency and time ranges. Time range have been used in early days of image processing, today they are called spatial range methods. Images within a frequency range are called spectrums.
+  Let's define an image with s(t), spectrum of it is S(f) and the Fourier-transformation with F. Time and frequency are connected by Fourier-transformation:
+    S(f) = F{s(t)}
+  The inverse operation is:
+    s(t) = F^-1{S(f)}
+  The impact of digital filters are represented by functions (transfer functions) in frequency ranges (eg.: convolution filters), while others are interpreted in time ranges (eg.: median filters). Let's multiply an image's spectrum with a quadratic function defined on the range of [-f,f] and 0 apart from it, then f frequencies larger then upper bound frequencies are removed (smoothened). The smoothened image is the result of the inverse Fourier-transformation applied on the altered spectrum. The scale of smoothness depends on the upper frequency bound, the lower value set on upper bound, the rougher smoothness will be resulted.
+  Generally this is how digital filters operates:
+    - let there be an s(t) function (which is the digital image itself)
+    - apply Fourier-transformation or calculate it's spectrum: S(f) = F{s(t)}
+    - multiply the spectrum with transfer function: S'(f) = S(f) A(f), where A(f) transfer function (quadratic function was used in the example)
+    - apply inverse Fourier-transformation on new spectrum data at the end a filtered image is created: s'(t) = F^-1{S'(f)}
+
+  Most of the "well-behaved" functions are Fourier-transformations. By knowing the transfer function in advance (defined by us, according to our needs with the image), the inverse Fourier-transformation can always be calculated. According to convolution identity, the convolution of two functions in given time range, is equal to the spectrum product of these functions:
+  s(t) * a(t) = F^-1{S(f) A(f)}
+
+  Applying the convolution identity, with given transfer function on Fourier-transformation, filtering can be performed in time range by convoluting the original image (in timerange) with the given transfer function Fourier-transformation:
+  s'(t) = s(t) * F^-1{A(f)}, where A(f) transform function.
+
+  Above discussed functions are continous functions. In case of discrete functions, the Fourier-transformation is simply called Discrete Fourier-transformation (DFT). The fast and efficient version of DFT is the Fast Fourier-transformation (FFT) with the following parameters:
+  - s(t) digital image itself
+  - A(f) a discrete transform function as well as it's inverse function.
+  - a(t) sampling function
+  Convulution on time range will use the results of a(t) sampling function.
+  Kernel keyword have been introduced for the discrete version of transform function inverse Fourier-transformation. Kernels are widely used not only in case of the effect of function can be defined by a product of spectrum and a function, but in cases where the result of time range function can not be given within a frequency range (pl. range filters).
+  Most of the digital filters are using kernels. The way these filters operate can be summarized in the following steps:
+    - take a kernel with the size of [(2k+1) * (2k+1)]
+    - run the given kernel window on every pixel of the image, in a way that the centre of the window is on the actual pixel.
+    - calculate the filtered value of the actual pixel by the values below the kernel with the help of algorithms.
+  Usually done with the following method: let g(x,y) = F{f(x,y)}, where g(x,y) is the filtered image at (x,y) coordinate, f represents the original image, F{} operator calculates the filtered value at (x,y) coordinate of the original image with the use of (x,y) neighbours intensity value. Taking advantage of observations, that intensity values of nearby points are closely related, than distant points. Another important property of these filters is that they are not recursively applyable, meaning that the procedure rely on the intensity values of the original image, namely data will always be taken from the original image.
+
+  Chapter 12. DIGITAL FILTERS
+  
+  CONVOLUTION FILTERS
+  
 
 
 
