@@ -311,6 +311,44 @@ SELECT poligonok.id-contour
   Bil: Specifically created for storing remote sensing images in binary format, capable of storing frequenc data bands, calibration points, corner coordinates and projection system parameters. The *.bil file contains intensity value for each pixel by band, *.hdr header file contains attributes data, like georeferenced points, corner and column data. Widely spread and used by many remote sensing softwares, systems, moreover, vector based systems capable of processing raster data are also supporting this type of raster format.
   
   INTENSITY TRANSFORMATION
+  Histogram equalization
+
+  All images contains different photometric values on each pixel. These pixel photometric values are varying from black to white. Although, this never occurs in real life. Due to the environmental and digital projection methods, the dynamic range of intensity values are much narrower than expected.
+  Figure 52. On the left a histogram of Band A, which is the frequency of intensity values on pixels. On the right Band A and B with crossplotted intensity space, describing their relationship.
+  
+  However all images contains a darkest and brightest pixel, but the brightest and darkest points are not equal to theoratical white and black points in RGB colour model. By representing the light emittion values and their occurrence frequency in a coordinate system resulting a histogram, which is the basic of image processing methods.
+  Figure 53. Process of histogram equalization: histogram of the original image(upper left figure), histogram after transformation (upper right figure) and transformation function (lower figure).
+
+  Histogram is the probability (P) representing the occurrency of intensity values on pixels, by calculating the occurrence of an intensity value (i) on every point:
+
+  Minimum and maximum intensity values of an image can be determined by a histogram. During histogram transformation, the transformation function will transform the intesity of pixels into the minimum and maximum range, so the histogram have been streched by increasing the difference between intensity values, which is the contrast.
+  Many histogram transformation methods exists along with the linear transformation. Any function can be applied for intensity transformation, as described on Figure 54. The intensity value of point i, can be given with the following formula:
+
+  applying for on an image matrix with 24 bit RGB colour model by the following function:
+
+  where f(x,y) represents the original image on (x,y) position, min and max are the minimum and maximum intensity values on the original image, g(x,y) transformation function will transform the image into an intensity range between 0-255. We have increased the intensity difference on pixels, hence increasing the contrast of the image. This transformation method is historgram equalization.
+  Figure 54. Intesity transformation can be given by any T function.
+
+  Figure 55. Original SPOT image.
+  Let's take a closer look at Figure 55., which is a black-and-white image representing a remote sense image. Let's create a histogram for it, representing the probability density function of intensity values varying from 0-255. As you can see the darkest and brightest points of the image are not 0 and 255. Usually the distributed function which is the integral of histogram is represented instead of the histogram.
+  Let's transform the original image by increasing the dynamic range of the image, namely the darkest point of the image is 0, and brightest point is 255. The result is shown on Figure 57.
+  Figure 56. Histogram and distribution function of the remote sense image. Indicating the possible dynamic range is quite narrow, because the darkest point starting somewhere at 60, while the brightest point is around 120.
+  Figure 57. Remote sense image transformed by histogram. Contrast have been significantly increased, as the brightest area on the image is almost white (255), where darkest areas are almost black (0).
+
+  Let's take a coloured image and apply the same histogram equalization transformation method on each RGB bands.
+  Figure 58. LANDSAT image.
+
+  Figure 59. LANDSAT image after histogram equalization.
+  If histogram equalization is applied on each colour, it may result changes on aspect, colour characteristics, rations, appearance of the image. However these changes are not relevant on remote sense images, at the same time, its curcial to keep the colour characteristics of an normal image. Figure 59 shows the LANDSAT image after histogram equalization.
+  The role of base colours are emphasized by increasing their intensity in between 0 and 255 with transformation, therefore colours of a raw image may gain some artificial characteristics, namely we may break up the colour balance of the image. By the above mentioned examples, my intention was to raise your attention, by changing the characteristics of colours and colour balance should be taken with care. We must know the consequences of our modifications, for example by increasing the contrast we have break up the colour balance of the image. It's possible to increase the contrast without breaking up the colour balance by not using the whole range of dynamic intensity range for all three colour channels.
+
+  BINARIZATION
+  A special case of intensity transformation is binarization, where the transformation degree is determined by a k threshold value (figure 60.). A special binarization transformation: slicing filter, where reseting is performed on the intensity band or within a range of an intensity band (figure 61.).
+  Figure 60. Binarization reset the intensity value under k threshold, and set the value to 1 for those having intensity value over k threshold. T describes the intensity transformation function, in our case its a step-function.
+  Figure 61. Slicing filters are working inside a band by reset it's value (in other words, they subtract the intensity band from the image), or keep it.
+
+  ABSTRACT KNOWLEDGE ON DIGITAL FILTERS.
+ 
 
 
 
