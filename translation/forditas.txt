@@ -381,7 +381,32 @@ SELECT poligonok.id-contour
   Chapter 12. DIGITAL FILTERS
   
   CONVOLUTION FILTERS
-  
+  Let f_1(t) a convolution function and f_2(t) the kernel. By convoluting the values in the kernel to time functions, which is the convoluted value at t time, this is how convolution or linear filters operates. 
+  #Formula
+  As for two-dimensional cases, for example a digital image the given formula will be changed as:
+  #Formula
+  Figure 62. A square impulse is the transfer function of the low-pass filter within a given range (for simplicity we are using a one-dimensional time function.
+
+  Values within the kernel determines the characteristics of filter's transfer function, which are actually the inverz Fourier-transformation with discrete values on transfer function.
+  Figure 63. Converse Fourier-transformation of the square impulse function within a sinc time interval.
+
+  For example let's take a closer look at a low-pass filter with f_f upper bound frequency. The transfer function is shown on figure 62 and it's converse Fourier-transformation shown on figure 63 with respectively sampled kernel data coeficcients. Applying convolution on given kernel data will resulting convolution filters. Transform characteristic depends on kernel data (which is the transform function on given frequency interval). In two-dimensional data like a digital image, the kernel is a 2D sinc function, described on figure 64. figure 65. describes the movement of kernel over a digital image.
+  Figure 64. A two-dimensional sinc function describing an anti-aliasing filter's kernel based on sampled data.
+  Figure 65. Magnified kernel moving across a LANDSAT image.
+
+  SEPARABLE FILTERS
+  By altering the shape of the kernel to a special form, calculation time of convolution may increase rapidly. Let's split up a "w" kernel matrix into a product of a column and a row vector, namely w(i,y) = u(i) * v(j), then the convolution of image with u then with v:
+  #Formula
+  resulting
+  #Formula
+
+  BOX FILTER
+  It's a special kernel based filter, where kernel data are having the same value, namely pixel values under the kernel will be averaged. Result of a box filter is a smoothened image. Applied the filter by itself does not give good results, however combining with other filters will be very effective tool. Due to it's simplicity, it's quite a popular filter, despect of it's unfavourable effect on spectrum. If you think about it thoroughly, convolution have been carried out by a square function on a time interval with a sinc function on a frequency range as a transform function, where upper limit frequency can be interpreted.
+
+  GAUSS FILTER
+  Values inside a Gauss-filters kernel are the two dimensional Gauss distribution values. Gauss distribution can be calculated as:
+  #Formula
+
 
 
 
