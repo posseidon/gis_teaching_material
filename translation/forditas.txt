@@ -406,7 +406,19 @@ SELECT poligonok.id-contour
   GAUSS FILTER
   Values inside a Gauss-filters kernel are the two dimensional Gauss distribution values. Gauss distribution can be calculated as:
   #Formula
+  Expected 0 value, sigma distributive Gauss-curve, from which the kernel can be calculated by applying data sampling on G function over grid points.
+  #Formula
+  Therefore the Gauss filter is separable, u and v vectors are calculated:
+  #Formula
+  
+  By applying the second power on values of the bell-shaped curve, we do not need to multiply during convolution, but bit shifting can be applied. This is a faster implementation for Gaus filter. Consequently u and v vector are change as the following:
+  #Formula
 
+  As we have seen, Gaus filter has a smoothening characteristics. The deegree of smoothness greatly depend on the magnitude of distribution, however with high distribution values, kernel size has to be increased according to it. Gauss filters are not really usefull by itself, it should be combined with other algorithms like Canny edge detection. It's transform method is not the best, although it's still better than a box filter's. Chunk methods are usually used, cutting the length of up-bound kernel, therefore improving run time qualities. (Do not forget, that a sinc function have been sampled in this case)
+  Figure 66. From left to right: Original image. A 3x3 sized kernel, Gauss filter with signma=1.0. Filtered image with 7x7 kernel box-filter. Filtered image with 7x7 kernel Gauss filter by sigma 2.0.
+
+  One of it's disadvantage is that edges are blurred away lossing their contrasts on upper-bound frequency methods. It's not surprising if we think about it, due to the fact that high frequency values have been removed from the spectrum, as edges are represented by high frequency values.
+  Physical size of images can be reduced ( by half the size). The algorithm: applying Gauss filter on the original image, after that remove every second row and columns, resulting 
 
 
 
