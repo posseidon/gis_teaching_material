@@ -418,7 +418,14 @@ SELECT poligonok.id-contour
   Figure 66. From left to right: Original image. A 3x3 sized kernel, Gauss filter with signma=1.0. Filtered image with 7x7 kernel box-filter. Filtered image with 7x7 kernel Gauss filter by sigma 2.0.
 
   One of it's disadvantage is that edges are blurred away lossing their contrasts on upper-bound frequency methods. It's not surprising if we think about it, due to the fact that high frequency values have been removed from the spectrum, as edges are represented by high frequency values.
-  Physical size of images can be reduced ( by half the size). The algorithm: applying Gauss filter on the original image, after that remove every second row and columns, resulting 
+  Physical size of images can be reduced ( by half the size). The algorithm: applying Gauss filter on the original image, after that remove every second row and columns, resulting Gauss pyramid. A Gauss pyramid can be used at texture detection applications, as the algorithm emphasizes heterogenous parts of the image by subtracting the images above each other.
+
+  NON-SEPARABLE FILTERS
+  Non-separable filters are those, which kernel matrix can not be defined by the product of two vectors. We have to apply summation plays in the convolution formula in these cases.
+
+  Chapter 13.
+  EDGE DETECTION
+
 
 
 
