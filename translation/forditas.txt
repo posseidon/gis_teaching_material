@@ -425,6 +425,102 @@ SELECT poligonok.id-contour
 
   Chapter 13.
   EDGE DETECTION
+  Edge detectors are local based filters, on a given point's with the help of neighbours derivative intesity values (figure 67.). Our goal is to emphasize the edges, pixels having similar properties shall be removed.
+  Figure 67. Maximum value on first derivative over the edges, second derivative has a zero value.
+
+  GRADIENT FILTER
+  By using the image as surface points, taking the derivative with $x$ and $y$ gradient vector, approximating the differential coefficient.
+  #Formula
+
+  The filter reacts to large intensity changes, resulting 0 results for homogenous areas. It's kernel is defined in the following:
+  #Formula
+  #Formula
+  The "p" value may freely selected, usually used values are p=2, p=3, p=2+sqrt(2). With p=2 it's a Prewitt operator, p=3 it's a Sobel operator and p=2+sqrt(2) is an izotropical operator (figure 68). The result must be normalized with p.
+  Figure 68. From left to right. Original image. An x and y vector graident approximation with izotropical gradient filter. Edge emphasize from previous two images.
+
+  LAPLACE FILTER
+  Operator definition of a Laplac filter:
+  #Formula
+
+  The following equation is a result of a secondary derivative at (x,y) point if the Laplace operator have been discretized.
+  #Formula
+
+  Therefore the Laplace filtered value at (x,y) point can be calculated with the following convolution kernel:
+  #Formula
+  Applications of a Laplace filter are: difference between a smoothened and original image, it reacts very efficiently to large intensity value fluctuations, therefore it reacts well for errors as well. Without smoothning, it's not effective at all.
+  Figure 69. From left to right. The original image. Laplace filtered image. LoG filtered image. Emboss filtered image set for detection of edges having North-East to South-West directions.
+
+  LoG FILTER
+  We may achieve a good edge detection filter by applying a Gauss smoothening before a Laplace filter (figure 69). Due to the fact that convolution is an associative operation, there fore it is possible to convolate the kernels of Laplace and Gauss filter and use the resulted matrix. This type of filter is called "Laplacian of Gaussian" (LoG). LoG reacts sensitively to noises and good for edge detection. It's kernel matrix look like the following:
+  #Formula
+
+  EMBOSS FILTER
+  Goal of Emboss filters are detecting edges in different directions (figure 69). A special kernel have been used where on the opposite corners of the matrix +1 and -1 are used. The filter reacts sensitively to edges perpendicular the values on the diagonals. An example for the kernel of an emboss filter:
+  #Formula
+  The kernel will detect North-East to South-West direction edges, while edges perpendicular to it will be neglected.
+
+  CANNY EDGE DETECTOR
+  Edges detection plays an important role in object recognition and vectorization of raster maps. Edges are the places on a map, where change on intensity value is the greatest. First of all, let's decide how sensitive should it be. Its worthy to apply smoothening filters or median filters to avoid every unimportant edges. A well-known method for smoothening is the application of Gauss function convolution. Let h be convolution of function f and g. It can be derive that:
+  #Formula
+  namely a derivative of the convolutionan on an image (be f) with Gauss-function (be g) is equivalent with the convolution of an image and the derivative of the Gauss function. Based on this formula, the concept of edge detection looks like the following:
+  - Convolute f with g'
+  - Calculate the absolute value of h'
+  - Define places for edges, where the gradient value of h exceeds a predefined threshold value.
+  Canny edge detector is not sensitive on direction of edges, therefore every edges are detected (an edges described as a line). Let's take a closer look at it's operation:
+  #Formula
+  where (fx,fy) is the gradient at point (x,y),
+  #Formula
+  where M(x,y) is the strength at point (x,y)
+  #Formula
+  as well as the derivative of the direction vector at point (x,y), which is the normal vector of the edge.
+
+  The fx and fy values can be approximated by calculating the x and y direciton izotropical convoluted value with gradient filter at given point, then calculate the M(x,y) value from it. Edges are visible on this image, however every edge is many pixel thich, since edges are not always clearly visible on an image. With this method, a perfect edges, may be thicker than 0 pixel value.
+
+  To solve this issue, a non-maximal edge elimination is introduced. This can be carried out by copying M(x,y) to an output image, with a given angle specified by theta(x,y) normal vector step in both direction on M(x,y) image, if any of the intensity value is greater than the actual, remove it the pixel from the output image. As the result of a non-maximal edges elimination process an output image is created containing every edges, displayed with a single line.
+  Figure 70. From left to right. 1. Original image. 2-3 Approximation with x and y direction graident filter. 4. Edge detection from two previous images.
+
+  Since every edges, even the lightest ones are presented on the output image, we may need to remove the lighter and keep the stronger, global edges. By applying an elimination process, continuity of edges are not taken into consideration, whereas we do not want break on the edges. The solution is edge thresholding. The basic idea behind it is to eliminate all points below a threshold value, and keep all the point over that threshold value to get the right pixel values between threshold value. The best approach would be a variation of th depth-first-search algorithm, in addition with the condition: when arriving to a definately good point, points lying on the path shall be kept (figure 70-71).
+  Figure 71. From left to right: 1: Edge expansion image 2: Elimination of non-maximum edges. 3-4: Edges threshold, with 10,40 and 40,100 parameters. On the second case only the strongest edges remained.
+
+  Canny filter can be applied for cases, where additive and Gauss-typed noise are present on an image. A simple approximation method, By firstly apply Gauss-smoothening then apply gradient mask. Since both filters are linear, therefore filtering can be done in one step, as described in filter concept section.
+
+  IMAGE SHARPENING
+  The above mentioned filters are capable of sharpening and improving the quality of images. The basic idea behind them is by adding the difference between the original and smoothened image to the original image:
+  g(x,y) = f(x,y) + [f(x,y) - fs(x,y)]
+  where fs is the smoothened image.
+
+  CHAPTER 14.
+  NON-LINEAR FILTERS
+  Non-linear filters are procedures, calculating the filtered value from a given pixel's neighbours, but not as the linear combination of the neighbour pixel values. We can no longer talk about kernel matrixes, only kernels or kernel windows.
+
+  RANK FILTER
+  The basic idea behing rank filters is to use the intensity values of pixels under a kernel window, namely sort them in order, then by this order select new intensity value for filtering pixel. One of the most widely used rank filter is the median filter, where the middle value is chosen in the sorted intensity list as the filtering pixel value (figure 72).
+  The result of filtering is a smoothened image, but transfer function can not assigned. Local noises are filtered very efficiently. "Salt and pepper" errors (small value, point based fluctuations) are successfully removed, because by ordering of intesity values, those highly different values (dark or light) pixels are sorted to the edges. Figure 73. describes a median filter applied on a noisy curve.
+  Figure 72. A noisy curve (with dashed lines) and median filtered variation of if (continous curve). Length of the kernel is "a".
+
+  As for digital images, an important attribute for median filter having kernel size of 2k+1, lines thinner than k are eliminated from the image. It's usefull when emphasizing large areas. Unfortunately it may shift the edges, round off corners, however the algorithm may be altered to eliminate these defects.
+  Figure 73. From left to right: Original image, "salt and pepper" errors. Conservatively smoothened image removing errors. 5x5 median filtered image. 11x11 median filtered image.
+
+  OLYMPIC FILTER
+  Similarly to the median filter, high intensity values are considered as noise. Certain sports are following the scoring system of the olympics. Values are sorted under the kernel window, then eliminating all candidates largely different from the median. It can be parameterized that how many elements shall be ignored from the largest and smallest elements.
+
+  CONSERVATIVE SMOOTHENING
+  The conservative smoothening noise filtering method, mostly suitable for eliminating "salt and pepper" noises. It's strategy is to sort all the pixels within the kernel window in increasing order except the actual pixel. We get a [min..max] interval, then check if the actual pixel is inside this interval or not (figure 73). If it's inside the interval, then the intensity value of the actual pixel is not changed, otherwise if it's greater than the maximum, then it's value will be the max. value, similarly to the minimal case.
+
+  KUWAHARA FILTER
+  The Kuwahara-filter is a noise and smoothening filter. One of it's most important attribute is that it does not shift or blur the edges way. Let's split up the kernel window into four overlapping (k+1)x(k+1) sized squares, starting from four corners (figure 74.) The filtered pixel's value will be the average intensity value of the current square, having the smallest standard deviation.
+  Figure 74. Window arrangement of a Kuwahara filter and the behaviour of the kernel over a corner.
+  Letters identifying, which square does a pixel belongs to. The middle pixel is contained by every squares. After sorting all the pixels to the right squares, the average pixel value and empirical distribution value is calculated for each square. After that, the average value is given to the pixel having the smallest standard deviation (figure 75).
+  Figure 75. From left to right: Original image. A 5x5 Kuwahara filtered image. A 11x11 Kuwahara filtered image. The filtered image refiltered with a 5x5 Kuwahara filter.
+
+
+  CHAPTER 15.
+  THRESHOLDING
+
+
+
+
+
 
 
 
