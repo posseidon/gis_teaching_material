@@ -516,8 +516,47 @@ SELECT poligonok.id-contour
 
   CHAPTER 15.
   THRESHOLDING
+  Thresholding is a way of grayscale image segmentation. A few threshold values are given, which define intervals. A special case for thresholding is a two-leveled thresholding, a binarization where a single threshold value is given, therefore pixels are sorted into two classes. These have been investigated in previous chapters.
+  Many strategy exists for defining threshold values, it all depends on our goal. What is the measurement for a good threshold value. Usually our goal is to define a threshold value, where objects are differentiated from the background. Since we have sorted them into two classes, therefore thresholding is not always optimal, although a good threshold does it with the best approximation.
 
+  OTSU THRESHOLDING
+  Figure 76. An image histogram has two peaks. A good segmentation creates two classes according to it.
+  Let's take a look at figure 76 displaying the histogram of an image. It's clear that standard distribution are group around two intensity values, namely the historgram has two peaks. Our goal is to segmentize the image, in a way that, each peak will contain a segmentation class.
+  According to Otsu a good classification having the possible biggest distribution between two classes. In order to do so, the empirical anticipatable value and variance value of each pixel of the image.
+  #Formula
+  Variance and anticipatable value of each class with t threshold value is:
+  #Formula
+  The variance within a class equals to the weighted sum of the classes variance value.
+  #Formula
+  Variance between classes are defined as the following:
+  #Formula
+  Which is :
+  #Formula
 
+  The optimal variance value is the value which separates the classes in the best way. Since the whole variance is equals to the sum of two variance values, thus there are two optimal ways to find the variance: one of them is by minimizing the variance value within a class, the other one is maximizing it within a class. If we choose the maximizing method, for each t threshold value, q1(t+1), Mu1(t+1), Mu2(t+1) values can be calculated by using q1(t), Mu1(t) and M2(t):
+  #Formula
+  Like this way, the algorithm can be calculated: calculate P, Mu and Sigma, with interval of t=0 to t=255 for q1(t), Mu1(t) and M2(t), and then calculate th Sigma_b^2 value, finally select t_optimal as argmax(Sigma_b^2).
+  The result of Otsu thresholding is described in figure. Otsu threshold method can be generalized, namely a multi-level thresholding can be created with the same strategy.
+  Figure 77. From left to right: Original grayscale image. New image with Otsu thresholding. An image with lighter background, applied by Otsu thresholding. With a predefined threshold value, the first image is well processed, and failed to process on the lighter image.
+  We will not discuss thresholding problems, as this topic is discussed in other chapters like data mining methods, classification methods, where segmentation algorithms will be thoroughly discussed.
+
+  Chapter 16
+  LOD ALGORITHMS
+  Displaying and handling of remote sense images, aerial images or digital height models is a great challenge for geographical information softwares. Let's take a use case, where a large area is displayed by large resolutioned images, a huge amount of data must be handled and displayed, where monitors resolution is much smaller than the data set. It's not reasonable to display that huge are with original resolution (even by using TIN model), namely rerefication must be done over the data set.
+  Algorithms simplifying images and relief models are commonly called level of detail (LOD) algorithms. Basically two variations exists for LOD: static and continous. As for static, different detailed variations of a model have been made in advance, and these pre-made variations are changed depending on what level of details is needed at actual purpose of use (e.g. altering zooming). It's been widely appliend for remote sensed images and raster images with height data.
+  However static lod can not applied on terrain models. Terrain models are usually large and therefore it's common to view a portion of it at low zoom level. The level of detail can not be altered at the same time. Continous level of detail (CLOD) algorithms are the solution for this kind of problems. Basically they split up the model into pieces, depending on current viewpoint (or different, predifeind metrics) the model is re-analyzed, that what can be simplified.
+  LOD algorithms are constantly changing the resolution of each components. The main question is how to pre-determine the level of detail or quality of a certain portion of an image. Many solutions exists to avoid type and extent of errors, they only differ in the way of usage, which way is more convenient.
+
+  GAUSS PYRAMID
+  One of the most known, and mostly used static LOD algorithm is the Gauss pyramid. Relatively large images  can be displayed quickly with it. The computation speedup have been achieved by pre-genering images in different resolution levels and displaying the requested resolution when needed. It's a very simple method.
+  Figure 78. Gaus pyramid with different resolution levels. Image size are decreased by the power of two, namely for example the original image size is 512*512, after the first level its size is 256*256, and so on.
+
+  The algorithm works as the following: take a large resolution image. Apply a smoothening filter on the original image with half of the upper-bound frequency value, then rarefacty the image, namely resampling the image with double the sampling distance. Continue the process on the resulted image as described in the first steps (figure 78).
+  The calculation of a Gauss pyramid in practice is the following. Denote the image on l-1 level be g_(l-1). Pixels on level l are calculated by:
+  #Formula
+  which is a convolution. As described on figure 79. (for one-dimension) how to calculate the pixel value for a rarefied image from a larger resolution image below it one level.
+  Figure 79. Calculation of a Gauss pyramid (one dimensional illustration)
+  Most of GIS softwares are using this method, for the first time when the user opens an image, the software always ask to create a Gauss pyramid or not. By choosing this option for the first time, display of the image may take a while, however for latter times, it will not take any time at all to open. Not only the opening but zooming will be much faster.
 
 
 
